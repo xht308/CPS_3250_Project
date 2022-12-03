@@ -1,4 +1,5 @@
-import java.io.Serializable;
+package cn.edu.wku.Locks;
+
 import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
