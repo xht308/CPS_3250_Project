@@ -69,8 +69,8 @@ public class BoundedContainer {
         //启动10个读线程和10个写线程
         BoundedContainer boundedContainer = new BoundedContainer();
 
-        int takeThreadNum = 18;
-        int putThreadNum = 18;
+        int takeThreadNum = 8;
+        int putThreadNum = 8;
 
         IntStream.range(0, takeThreadNum).forEach(i -> new Thread(() -> {
             try {
