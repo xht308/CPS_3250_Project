@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="Implement SpinLock">
+    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="Implement the condition in SpinLock">
       <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ExampleSpinLock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/MutexLock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BoundedContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BoundedContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/SpinLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/SpinLock.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,9 +52,10 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "模块",
+    "project.structure.last.edited": "项目",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -106,7 +104,9 @@
       <workItem from="1670015983519" duration="6297000" />
       <workItem from="1670077535324" duration="8428000" />
       <workItem from="1670142325896" duration="4073000" />
-      <workItem from="1670146569950" duration="6081000" />
+      <workItem from="1670146569950" duration="7545000" />
+      <workItem from="1670156028528" duration="25000" />
+      <workItem from="1670156066104" duration="114000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1670061433070</created>
@@ -122,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670142532835</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Implement the condition in SpinLock">
+      <created>1670154931083</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1670154931083</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -142,6 +149,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Implement SpinLock" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement SpinLock" />
+    <MESSAGE value="Implement the condition in SpinLock" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement the condition in SpinLock" />
   </component>
 </project>
