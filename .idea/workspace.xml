@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="Initial Commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ExampleSpinLock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BoundedContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BoundedContainer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/SpinLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/SpinLock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://C:/Program Files/Microsoft/jdk-17.0.4.8-hotspot/lib/src.zip!/java.base/java/util/concurrent/locks/ReentrantLock.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
   </component>
   <component name="ProjectId" id="2INJCUtRLzbpjnPQDWGZRu3DnHH" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -41,7 +49,12 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager" selected="应用程序.BoundedContainer">
@@ -86,8 +99,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1670015981919</updated>
-      <workItem from="1670015983519" duration="3605000" />
+      <workItem from="1670015983519" duration="6297000" />
+      <workItem from="1670077535324" duration="8428000" />
     </task>
+    <task id="LOCAL-00001" summary="Initial Commit">
+      <created>1670061433070</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1670061433070</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -103,5 +125,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit" />
   </component>
 </project>
