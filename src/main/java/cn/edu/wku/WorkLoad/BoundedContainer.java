@@ -110,12 +110,12 @@ public class BoundedContainer<E> {
     }
 
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class lockClass = MutexLock.class;
+        Class lockClass = CLHLock.class;
         //启动10个读线程和10个写线程
         BoundedContainer<String> boundedContainer = new BoundedContainer<>(10, (Lock) lockClass.getDeclaredConstructor().newInstance());
 
-        int takeThreadNum = 5;
-        int putThreadNum = 5;
+        int takeThreadNum = 100;
+        int putThreadNum = 100;
 
         ArrayList<Thread> threads = new ArrayList<>();
 

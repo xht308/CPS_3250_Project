@@ -28,13 +28,14 @@ public class TickLock implements Lock {
 
     @Override
     public void lockInterruptibly() throws InterruptedException {
-        // Get ticket number
-        long myTicket = ticket.getAndIncrement();
-        // Busy waiting
-        while (!Thread.interrupted()) {
-            if (myTicket == flag) return;
-        }
-        throw new InterruptedException();
+//        // Get ticket number
+//        long myTicket = ticket.getAndIncrement();
+//        // Busy waiting
+//        while (!Thread.interrupted()) {
+//            if (myTicket == flag) return;
+//        }
+//        throw new InterruptedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
