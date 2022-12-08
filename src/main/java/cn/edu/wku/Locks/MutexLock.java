@@ -6,17 +6,18 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.atomic.*;
 import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MutexLock implements Lock {
 
-    // Indicate whether the lock is occupied
-    private final AtomicBoolean isLocked = new AtomicBoolean();
+//    // Indicate whether the lock is occupied
+//    private final AtomicBoolean isLocked = new AtomicBoolean();
 
     // The waiting queue
-    private final ConcurrentQueue waitingQueue = new ConcurrentQueue();
+    private final ConcurrentQueue queue = new ConcurrentQueue();
+
+//    private final ConcurrentLinkedQueue<Thread> queue = new ConcurrentLinkedQueue<>();
 
     public MutexLock() {
 
@@ -24,59 +25,62 @@ public class MutexLock implements Lock {
 
     @Override
     public void lock() {
-        // Try directly obtain the lock
-        //  Not occupied --> occupy
-        if (isLocked.compareAndSet(false, true)) return;
-        // occupied --> add to waiting list
-        waitingQueue.offer(Thread.currentThread());
-        // sleep until waken by other threads
+        // Add the thread to the waiting queue
+        queue.offer(Thread.currentThread());
+        // is the first thread in the queue --> continue execution
+        if (queue.peek() == Thread.currentThread()) return;
+        // is not --> sleep until waken by other threads
         LockSupport.park();
         // Ignore interruptions here since it is not the emphasis of the project
     }
 
     @Override
     public void lockInterruptibly() throws InterruptedException {
-        // Try directly obtain the lock
-        //  Not occupied --> occupy
-        if (isLocked.compareAndSet(false, true)) return;
-        // occupied --> add to waiting list
-        waitingQueue.offer(Thread.currentThread());
-        // sleep until waken by other threads
+        // Add the thread to the waiting queue
+        queue.offer(Thread.currentThread());
+        // is the first thread in the queue --> continue execution
+        if (queue.peek() == Thread.currentThread()) return;
+        // is not --> sleep until waken by other threads
         LockSupport.park();
         if (Thread.interrupted()) throw new InterruptedException();
     }
 
     // Attempt to get the lock once with no thread blocking
+    // [Unsupported] because the queue does not support removal
     @Override
     public boolean tryLock() {
-        return isLocked.compareAndSet(false, true);
+        throw new UnsupportedOperationException();
+//        return isLocked.compareAndSet(false, true);
     }
 
     // Attempt to get the lock with no thread blocking during a specific period of time
     //  in busy waiting pattern
+    // [Unsupported] because the queue does not support removal
     @Override
-    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-        // Get the deadline of lock attempts
-        long deadline = System.nanoTime() + unit.toNanos(time);
-        do {
-            // Check whether this thread is interrupted
-            if (Thread.interrupted()) throw new InterruptedException();
-            // Attempt to occupy the lock
-            if (isLocked.compareAndSet(false, true)) return true;
-            // Check the deadline
-        } while (System.nanoTime() < deadline);
-        // Fail to obtain the lock
-        return false;
+    public boolean tryLock(long time, TimeUnit unit) {
+        throw new UnsupportedOperationException();
+//        // Get the deadline of lock attempts
+//        long deadline = System.nanoTime() + unit.toNanos(time);
+//        do {
+//            // Check whether this thread is interrupted
+//            if (Thread.interrupted()) throw new InterruptedException();
+//            // Attempt to occupy the lock
+//            if (isLocked.compareAndSet(false, true)) return true;
+//            // Check the deadline
+//        } while (System.nanoTime() < deadline);
+//        // Fail to obtain the lock
+//        return false;
     }
 
+    // Deliver the lock to next waiting thread or release the lock when no waiting threads
     @Override
     public void unlock() {
-        // Try getting the next waiting thread
-        Thread next = waitingQueue.poll();
-        //  no threads waiting --> release the lock
-        if (next == null) isLocked.set(false);
-        //  there are threads waiting --> wake it up (deliver the lock)
-        else LockSupport.unpark(next);
+        // Remove the current thread
+        queue.poll();
+        // Get the next thread
+        Thread next = queue.peek();
+        //  if next thread exist --> wake it up (deliver the lock)
+        if (next != null) LockSupport.unpark(next);
     }
 
     @Override
@@ -106,7 +110,7 @@ public class MutexLock implements Lock {
         // Ensure the lock associated with this condition is locked
         // Otherwise the thread cannot be blocked by the condition
         private void checkLock() {
-            if (!isLocked.get()) {
+            if (queue.peek() != Thread.currentThread()) {
                 throw new IllegalMonitorStateException();
             }
         }
@@ -119,7 +123,7 @@ public class MutexLock implements Lock {
             //  thus it is protected by the checkLock() method
             add(thread);
             // Release the lock
-            if (!isLocked.get()) {
+            if (queue.peek() != Thread.currentThread()) {
                 // The lock is released for some reason --> remove the thread from the queue --> throw IllegalMonitorStateException
                 if (!remove(thread)) {
                     // The thread is removed from the queue during the operation (signal() is called) --> recall signal() to pass to other waiting threads
