@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="Bug Fix &amp; Ticket Lock implementation">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/CLHLock.java" afterDir="false" />
+    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="CLH Lock implementation">
       <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ExampleSpinLock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/MCSLock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/TickLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/TickLock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/TickLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/TicketLock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/WorkLoad/BoundedContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/WorkLoad/BoundedContainer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,6 +25,19 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="96f6fae3-b4c2-43d7-93de-8a37e0616723" />
+        <option name="url" value="https://github.com/xht308/CPS_3250_Project.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://C:/Program Files/Microsoft/jdk-17.0.4.8-hotspot/lib/src.zip!/java.base/java/util/concurrent/locks/ReentrantLock.java" root0="SKIP_INSPECTION" />
@@ -132,6 +145,7 @@
       <workItem from="1670325455963" duration="135000" />
       <workItem from="1670431313408" duration="1264000" />
       <workItem from="1670475025162" duration="14811000" />
+      <workItem from="1670571560696" duration="7497000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1670061433070</created>
@@ -168,7 +182,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670533169776</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="CLH Lock implementation">
+      <created>1670536073452</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1670536073452</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,7 +213,8 @@
     <MESSAGE value="Change JDK Version to 11" />
     <MESSAGE value="UI和Chart" />
     <MESSAGE value="Bug Fix &amp; Ticket Lock implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug Fix &amp; Ticket Lock implementation" />
+    <MESSAGE value="CLH Lock implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="CLH Lock implementation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

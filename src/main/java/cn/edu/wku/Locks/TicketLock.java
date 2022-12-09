@@ -7,14 +7,14 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-public class TickLock implements Lock {
+public class TicketLock implements Lock {
 
     // Store the number of next ticket
     private final AtomicLong ticket = new AtomicLong(0);
     // Store the number of currently running thread
     private volatile long flag = 0;
 
-    public TickLock() {
+    public TicketLock() {
 
     }
 

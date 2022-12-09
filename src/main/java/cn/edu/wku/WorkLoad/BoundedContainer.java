@@ -61,7 +61,7 @@ public class BoundedContainer<E> {
             }
             // Not full --> put the element
             elements[putIndex++] = element;
-            System.out.println("put");
+            System.out.println("put  " + element);
             // Warp Around
             if (putIndex == elements.length) putIndex = 0;
             // Add count
@@ -96,7 +96,7 @@ public class BoundedContainer<E> {
             }
             // Not empty --> take one element
             E element = (E) elements[takeIndex++];
-            System.out.println("take");
+            System.out.println("take " + element);
             // Warp around
             if (takeIndex == elements.length) takeIndex = 0;
             // Decrease count
@@ -110,12 +110,12 @@ public class BoundedContainer<E> {
     }
 
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class lockClass = CLHLock.class;
+        Class lockClass = TicketLock.class;
         //启动10个读线程和10个写线程
-        BoundedContainer<String> boundedContainer = new BoundedContainer<>(10, (Lock) lockClass.getDeclaredConstructor().newInstance());
+        BoundedContainer<Long> boundedContainer = new BoundedContainer<>(10, (Lock) lockClass.getDeclaredConstructor().newInstance());
 
-        int takeThreadNum = 100;
-        int putThreadNum = 100;
+        int takeThreadNum = 200;
+        int putThreadNum = 200;
 
         ArrayList<Thread> threads = new ArrayList<>();
 
@@ -132,7 +132,7 @@ public class BoundedContainer<E> {
         for (int i = 0; i < putThreadNum; i++) {
             threads.add(new Thread(() -> {
                 try {
-                    boundedContainer.put("hi");
+                    boundedContainer.put(System.nanoTime());
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
