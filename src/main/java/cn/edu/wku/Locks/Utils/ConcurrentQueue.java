@@ -2,34 +2,38 @@ package cn.edu.wku.Locks.Utils;
 
 import java.util.concurrent.atomic.*;
 
-public class ConcurrentQueue {
+public class ConcurrentQueue<E> {
 
-    private final AtomicReference<Node> head = new AtomicReference<>();
-    private final AtomicReference<Node> tail = new AtomicReference<>();
+    private final AtomicReference<Node<E>> head = new AtomicReference<>();
+    private final AtomicReference<Node<E>> tail = new AtomicReference<>();
 
-    private static class Node {
+    private static class Node<T> {
         // The waiting thread the node is carrying
-        private final Thread thread;
+        private final T element;
 
         // The waiting queue pointers
         // The waiting queue is protected by an optimistic lock (implemented in enqueue() and dequeue())
 //        // The previous node in the linked list of waiting threads
 //        private AtomicReference<Node> prev = new AtomicReference<>();
         // The next node in the liked list of waiting threads
-        private final AtomicReference<Node> next = new AtomicReference<>();
+        private final AtomicReference<Node<T>> next = new AtomicReference<>();
 
-        // Use the current thread as the waiting thread in the waiting queue
-        Node() {
-            this(Thread.currentThread());
+//        // Use the current thread as the waiting thread in the waiting queue
+//        Node() {
+//            this(Thread.currentThread());
+//        }
+
+        private Node() {
+            this.element = null;
         }
 
         // Specify a thread to be carried by the node
-        Node(Thread thread) {
-            this.thread = thread;
+        Node(T element) {
+            this.element = element;
         }
 
-        public Thread getThread() {
-            return thread;
+        public T getElement() {
+            return element;
         }
 
 //        public Node getPrev() {
@@ -40,27 +44,27 @@ public class ConcurrentQueue {
 //            this.prev.set(prev);
 //        }
 
-        public Node getNext() {
+        public Node<T> getNext() {
             return next.get();
         }
 
-        public void setNext(Node next) {
+        public void setNext(Node<T> next) {
             this.next.set(next);
         }
     }
 
     // Add the thread to the waiting queue
     // Helper method
-    public void offer(Thread thread) {
-        enqueue(new Node(thread));
+    public void offer(E element) {
+        enqueue(new Node<>(element));
     }
 
     // Add the node to the waiting queue
     // Critical section (Can be accessed by multiple threads at a time)
     // Protected by the optimistic lock
-    private void enqueue(Node node) {
+    private void enqueue(Node<E> node) {
         // Set the node as the last node (tail)
-        Node tempTail = tail.get();
+        Node<E> tempTail = tail.get();
         while (!tail.compareAndSet(tempTail, node)) tempTail = tail.get();
 //        // Contact the node to the previous node
 //        node.setPrev(tempTail);
@@ -75,19 +79,19 @@ public class ConcurrentQueue {
     }
 
     // Extract a thread from the waiting queue
-    public Thread poll() {
-        Node temp = dequeue();
-        return temp == null? null: temp.getThread();
+    public E poll() {
+        Node<E> temp = dequeue();
+        return temp == null? null: temp.getElement();
     }
 
 
     // Extract a node from the waiting queue
     // Not a critical section (Only the unlock operation will access this method)
-    private Node dequeue() {
+    private Node<E> dequeue() {
         // Check if there is any elements in the queue --> null
         if (tail.get() == null) return null;
         // Obtain the head node
-        Node ret = head.get();
+        Node<E> ret = head.get();
         // Busy waiting to obtain the head node
         //  as it can temporarily be null (check enqueue())
         while (ret == null) ret = head.get();
@@ -100,17 +104,17 @@ public class ConcurrentQueue {
     }
 
     // Get the first thread in the queue
-    public Thread peek() {
-        Node temp = firstNode();
-        return temp == null? null: temp.getThread();
+    public E peek() {
+        Node<E> temp = firstNode();
+        return temp == null? null: temp.getElement();
     }
 
     // Get the first node in the queue
-    private Node firstNode() {
+    private Node<E> firstNode() {
         // Check if there is any elements in the queue --> null
         if (tail.get() == null) return null;
         // Obtain the head node
-        Node ret = head.get();
+        Node<E> ret = head.get();
         // Busy waiting to obtain the head node
         //  as it can temporarily be null (check enqueue())
         while (ret == null) ret = head.get();

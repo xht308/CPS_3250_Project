@@ -13,7 +13,7 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
-        ConcurrentQueue queue = new ConcurrentQueue();
+        ConcurrentQueue<Thread> queue = new ConcurrentQueue<>();
         for (int i = 0; i < 10; i++) {
             new Thread(() -> queue.offer(Thread.currentThread())).start();
         }

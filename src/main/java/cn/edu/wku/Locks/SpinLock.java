@@ -10,6 +10,9 @@ import java.util.concurrent.locks.LockSupport;
 
 public class SpinLock implements Lock  {
 
+    // The number of attempts in busy waiting before yielding
+    private static final int SPIN_TIMES = 1000;
+
     // The lock indicator using atomic operations
     private final AtomicBoolean isLocked = new AtomicBoolean();
 
@@ -28,7 +31,17 @@ public class SpinLock implements Lock  {
     //  not available --> perform busy waiting
     @Override
     public void lock() {
-        while (!isLocked.compareAndSet(false, true));
+        while (true) {
+            for (int i = 0; i < SPIN_TIMES; i++) {
+                // Attempting to obtain the lock
+                if (isLocked.compareAndSet(false, true)) return;
+            }
+            // Increase the priority of this thread in CPU scheduling
+            //  which tends to automatically decrease in Windows over time
+            //  and cause performance issue
+            Thread.yield();
+        }
+//        while (!isLocked.compareAndSet(false, true));
     }
 
     // Check the status of the lock and whether the thread is interrupted
@@ -37,10 +50,19 @@ public class SpinLock implements Lock  {
     //      not available --> perform busy waiting
     @Override
     public void lockInterruptibly() throws InterruptedException {
-        while (!Thread.interrupted()) {
-            if (isLocked.compareAndSet(false, true)) return;
+        while (true) {
+            if (Thread.interrupted()) throw new InterruptedException();
+            for (int i = 0; i < SPIN_TIMES; i++) {
+                // Attempting to obtain the lock
+                if (isLocked.compareAndSet(false, true)) return;
+            }
+            // Increase the priority of this thread in CPU scheduling
+            Thread.yield();
         }
-        throw new InterruptedException();
+//        while (!Thread.interrupted()) {
+//            if (isLocked.compareAndSet(false, true)) return;
+//        }
+//        throw new InterruptedException();
     }
 
     // Attempt to get the lock once with no thread blocking
@@ -55,11 +77,17 @@ public class SpinLock implements Lock  {
     public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
         // Get the deadline of lock attempts
         long deadline = System.nanoTime() + unit.toNanos(time);
+        int attemptCount = 0;
         do {
             // Check whether this thread is interrupted
             if (Thread.interrupted()) throw new InterruptedException();
             // Attempt to occupy the lock
             if (isLocked.compareAndSet(false, true)) return true;
+            // Check yield
+            if (++attemptCount == SPIN_TIMES) {
+                Thread.yield();
+                attemptCount = 0;
+            }
         // Check the deadline
         } while (System.nanoTime() < deadline);
         // Fail to obtain the lock
