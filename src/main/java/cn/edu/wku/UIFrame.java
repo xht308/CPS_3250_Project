@@ -240,12 +240,12 @@ public class UIFrame {
                 System.out.println(test.getBase());
                 BarChartDemo1 demo = new BarChartDemo1("LineChart");
 //                demo.checkLock(SpinFlag, MutexFlag,MCSFlag, ImprovedMCSFlag);
-                demo.addData(100000, "MCSLock", "100");
-                demo.addData(100, "MCSLock", "100000");
-                demo.addData(100000, "SpinLock", "100000");
-                demo.addData(100, "SpinLock", "100");
-                demo.addData(50000, "MutexLock", "1000");
-                demo.addData(50000, "MutexLock", "10000");
+//                demo.addData(100000, "MCSLock", "100");
+//                demo.addData(100, "MCSLock", "100000");
+//                demo.addData(100000, "SpinLock", "100000");
+//                demo.addData(100, "SpinLock", "100");
+//                demo.addData(50000, "MutexLock", "1000");
+//                demo.addData(50000, "MutexLock", "10000");
                 demo.pack();
                 UIUtils.centerFrameOnScreen(demo);
                 demo.setVisible(true);

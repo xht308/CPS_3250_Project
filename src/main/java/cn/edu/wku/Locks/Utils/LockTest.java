@@ -4,6 +4,7 @@ import cn.edu.wku.Locks.MutexLock;
 import cn.edu.wku.Locks.SpinLock;
 import cn.edu.wku.UIFrame;
 import cn.edu.wku.WorkLoad.BoundedContainer;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,16 +12,20 @@ import java.util.concurrent.locks.Lock;
 
 public class LockTest {
     UIFrame UI = new UIFrame();
-    private double TotalAmount = UI.getTotalAmout();
-    private double Trails = UI.getTrail();
+    private long TotalAmount = UI.getTotalAmout();
+    private long Trails = UI.getTrail();
 //    private double TotalAmount = 3000;
 //    private double Trails = 10;
     private int Base = (int)(Math.pow(TotalAmount, 1.0/Trails));
-    private int[] ProcessInGroup = new int[(int)Trails]; //store the # of process in each trails of group
-    private int[] GroupsInTrail = new int[(int)Trails];
+    private int[] ProcessInGroup = new int[(int) Trails]; //store the # of process in each trails of group
+    private int[] GroupsInTrail = new int[(int) Trails];
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset(); //用于存放运行时间，锁，trail
 
     public int getBase() {
         return Base;
+    }
+    public DefaultCategoryDataset getDataset() {
+        return dataset;
     }
 
     public void computeProcess(double TotleAmount, double Trails, int Base){
@@ -35,6 +40,14 @@ public class LockTest {
         }
     }
 
+    //计算锁在所有trail内的运行时间，并将结果加入dataset
+    public void builtDataset(long time, String Lock, long trail){
+        for(int i = 1; i < trail + 1; i++){
+            dataset.addValue(100, Lock, String.valueOf(i));
+        }
+    }
+
+    // 计算锁在一个trail内的运行时间
     public long test(int operationNumPerThread, int totalThreadsNum, BoundedContainer<Long> boundedContainer){
         ArrayList<Thread> threads = new ArrayList<>();
 
