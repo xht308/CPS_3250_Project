@@ -7,14 +7,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-public class CLHLock implements Lock {
+public class ClassicCLHLock implements Lock {
 
     // Initial tail
     private final AtomicReference<Node> tail = new AtomicReference<>(Node.DUMMY_NODE);
     private volatile Node current = Node.DUMMY_NODE;
-
-    // The number of attempts in busy waiting before yielding
-    private static final int SPIN_TIMES = 1000;
 
     // Node of waiting threads
     private static class Node {
@@ -63,18 +60,9 @@ public class CLHLock implements Lock {
         node.setPrev(tail);
         // Monitor the status of the previous node
         //  once the previous node finished execution --> continue
-        while (true) {
-            for (int i = 0; i < SPIN_TIMES; i++) {
-                if (!node.getPrev().isLocked()) {
-                    this.current = node;
-                    return;
-                }
-            }
-            // Increase the priority of this thread in CPU scheduling
-            //  which tends to automatically decrease in Windows over time
-            //  and cause performance issue
-            Thread.yield();
-        }
+        while (node.getPrev().isLocked());
+        // Set the current node
+        this.current = node;
     }
 
     @Override

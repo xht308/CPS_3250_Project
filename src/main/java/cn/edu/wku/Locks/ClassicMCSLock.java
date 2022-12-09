@@ -7,15 +7,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-public class MCSLock implements Lock {
+public class ClassicMCSLock implements Lock {
 
     // The last node in the waiting queue
     private final AtomicReference<Node> tail = new AtomicReference<>();
     // The current running node
     private volatile Node current = null;
-
-    // The number of attempts in busy waiting before yielding
-    private static final int SPIN_TIMES = 1000;
 
     // Node data structure
     private static class Node {
@@ -71,19 +68,9 @@ public class MCSLock implements Lock {
         //  not empty --> set the next pointer of the previous node --> wait being unlocked
         else {
             tail.setNext(node);
-            while (true) {
-                for (int i = 0; i < SPIN_TIMES; i++) {
-                    if (!node.isLocked()) {
-                        // Set current
-                        this.current = node;
-                        return;
-                    }
-                }
-                // Increase the priority of this thread in CPU scheduling
-                //  which tends to automatically decrease in Windows over time
-                //  and cause performance issue
-                Thread.yield();
-            }
+            while (node.isLocked());
+            // Set current
+            this.current = node;
         }
     }
 
@@ -106,7 +93,6 @@ public class MCSLock implements Lock {
     public boolean tryLock(long time, @NotNull TimeUnit unit) throws InterruptedException {
         // Get the deadline of lock attempts
         long deadline = System.nanoTime() + unit.toNanos(time);
-        int attemptCount = 0;
         // Get node object
         Node node = new Node();
         do {
@@ -116,11 +102,6 @@ public class MCSLock implements Lock {
             if (tail.compareAndSet(null, node)) {
                 current = node;
                 return true;
-            }
-            // Check yield
-            if (++attemptCount == SPIN_TIMES) {
-                Thread.yield();
-                attemptCount = 0;
             }
             // Check the deadline
         } while (System.nanoTime() < deadline);

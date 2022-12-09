@@ -8,8 +8,11 @@ import java.util.concurrent.locks.Lock;
 
 public class BoundedContainer<E> {
     public static final int DEFAULT_CAPACITY = 10;
-    private final Object[] elements;//容器底层的数据结构
-    private final Lock lock;//锁对象
+    // Data container
+    private final Object[] elements;
+    // The lock object protecting the put and take operations
+    //  ensures the modifications to the bounded container is mutually exclusive
+    private final Lock lock;
     private int elementCount;//数组elements中的元素数量
     private int putIndex;//写指针
     private int takeIndex;//读指针
@@ -54,9 +57,9 @@ public class BoundedContainer<E> {
             // Check queue size
             if (elementCount == elements.length) {
                 // Full --> release lock and try again
-//                System.out.println("Put Unlock");
+                System.out.println("Put Unlock");
                 lock.unlock();
-//                System.out.println("Put Unlocked");
+                System.out.println("Put Unlocked");
                 continue;
             }
             // Not full --> put the element
@@ -89,9 +92,9 @@ public class BoundedContainer<E> {
             // Check queue size
             if (elementCount == 0) {
                 // Empty --> release lock and try again
-//                System.out.println("Take Unlock");
+                System.out.println("Take Unlock");
                 lock.unlock();
-//                System.out.println("Take Unlocked");
+                System.out.println("Take Unlocked");
                 continue;
             }
             // Not empty --> take one element
@@ -110,16 +113,24 @@ public class BoundedContainer<E> {
     }
 
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class lockClass = TicketLock.class;
+        Class lockClass = CLHLock.class;
         //启动10个读线程和10个写线程
         BoundedContainer<Long> boundedContainer = new BoundedContainer<>(10, (Lock) lockClass.getDeclaredConstructor().newInstance());
 
-        int takeThreadNum = 200;
-        int putThreadNum = 200;
+        int putTakeOperationNum = 4000;
+//        int takeThreadNum = 200;
+//        int putThreadNum = 200;
 
         ArrayList<Thread> threads = new ArrayList<>();
 
-        for (int i = 0; i < takeThreadNum; i++) {
+        for (int i = 0; i < putTakeOperationNum; i++) {
+            threads.add(new Thread(() -> {
+                try {
+                    boundedContainer.put(System.nanoTime());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
             threads.add(new Thread(() -> {
                 try {
                     boundedContainer.take();
@@ -129,15 +140,9 @@ public class BoundedContainer<E> {
             }));
         }
 
-        for (int i = 0; i < putThreadNum; i++) {
-            threads.add(new Thread(() -> {
-                try {
-                    boundedContainer.put(System.nanoTime());
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }));
-        }
+//        for (int i = 0; i < putThreadNum; i++) {
+//
+//        }
 
         Long start = System.currentTimeMillis();
 
