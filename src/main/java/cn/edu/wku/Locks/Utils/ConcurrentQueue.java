@@ -1,7 +1,5 @@
 package cn.edu.wku.Locks.Utils;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.concurrent.atomic.*;
 
 public class ConcurrentQueue {
@@ -82,9 +80,9 @@ public class ConcurrentQueue {
         return temp == null? null: temp.getThread();
     }
 
+
     // Extract a node from the waiting queue
     // Not a critical section (Only the unlock operation will access this method)
-    @Nullable
     private Node dequeue() {
         // Check if there is any elements in the queue --> null
         if (tail.get() == null) return null;
@@ -98,6 +96,25 @@ public class ConcurrentQueue {
         // Set head pointer to the next node
         head.compareAndSet(ret, ret.getNext());
         // Return the node
+        return ret;
+    }
+
+    // Get the first thread in the queue
+    public Thread peek() {
+        Node temp = firstNode();
+        return temp == null? null: temp.getThread();
+    }
+
+    // Get the first node in the queue
+    private Node firstNode() {
+        // Check if there is any elements in the queue --> null
+        if (tail.get() == null) return null;
+        // Obtain the head node
+        Node ret = head.get();
+        // Busy waiting to obtain the head node
+        //  as it can temporarily be null (check enqueue())
+        while (ret == null) ret = head.get();
+        // Return
         return ret;
     }
 

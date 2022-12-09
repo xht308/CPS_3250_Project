@@ -28,7 +28,7 @@ public class SpinLock implements Lock  {
     //  not available --> perform busy waiting
     @Override
     public void lock() {
-        while (isLocked.compareAndSet(false, true));
+        while (!isLocked.compareAndSet(false, true));
     }
 
     // Check the status of the lock and whether the thread is interrupted
@@ -71,7 +71,9 @@ public class SpinLock implements Lock  {
     //  is not occupied --> throw IllegalMonitorStateException
     @Override
     public void unlock() {
-        if (!isLocked.compareAndSet(true, false)) throw new IllegalMonitorStateException();
+        if (!isLocked.compareAndSet(true, false)) {
+            throw new IllegalMonitorStateException();
+        }
     }
 
     // Not implemented --> Throw UnsupportedOperationException
