@@ -9,7 +9,6 @@ package cn.edu.wku;
         import org.jfree.chart.title.TextTitle;
         import org.jfree.chart.ui.ApplicationFrame;
         import org.jfree.data.category.CategoryDataset;
-        import org.jfree.data.category.DefaultCategoryDataset;
 
         import java.awt.*;
 
@@ -19,17 +18,6 @@ package cn.edu.wku;
 public class BarChartDemo1 extends ApplicationFrame {
 
     private static final long serialVersionUID = 1L;
-    static String LockChoose = null;
-//    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-     static UIFrame UIFrame = new UIFrame();
-
-    public static String getLockChoose() {
-        return LockChoose;
-    }
-
-    public static void setLockChoose(String lockChoose) {
-        LockChoose = lockChoose;
-    }
 
     /**
      * Creates a new demo instance.

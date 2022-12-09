@@ -1,8 +1,6 @@
 package cn.edu.wku.Locks.Utils;
 
-import cn.edu.wku.Locks.MutexLock;
-import cn.edu.wku.Locks.SpinLock;
-import cn.edu.wku.UIFrame;
+import cn.edu.wku.Locks.*;
 import cn.edu.wku.WorkLoad.BoundedContainer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -46,10 +44,35 @@ public class LockTest {
         }
     }
 
+    public BoundedContainer<Long> SpinBoundedContainer(boolean SpinFlag) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        BoundedContainer<Long> SpinBoundedContainer = new BoundedContainer<>(10, SpinLock.class);
+        return SpinBoundedContainer;
+    }
+
+    public BoundedContainer<Long> MutexBoundedContainer(boolean MutexFlag) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        BoundedContainer<Long> MutexBoundedContainer = new BoundedContainer<>(10, MutexLock.class);
+        return MutexBoundedContainer;
+    }
+
+    public BoundedContainer<Long> MCSBoundedContainer(boolean MCSFlag) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        BoundedContainer<Long> MCSBoundedContainer = new BoundedContainer<>(10, MCSLock.class);
+        return MCSBoundedContainer;
+    }
+
+    public BoundedContainer<Long> CLHBoundedContainer(boolean CLHFlag) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        BoundedContainer<Long> CLHBoundedContainer = new BoundedContainer<>(10, CLHLock.class);
+        return CLHBoundedContainer;
+    }
+
+    public BoundedContainer<Long> TicketBoundedContainer(boolean TicketFlag) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        BoundedContainer<Long> TicketBoundedContainer = new BoundedContainer<>(10, TicketLock.class);
+        return TicketBoundedContainer;
+    }
+
     //计算锁在所有trail内的运行时间，并将结果加入dataset
-    public void builtDataset(long time, String Lock, long trail){
+    public void builtDataset(long time, String Lock, long trail,int operationNumPerThread, int totalThreadsNum, BoundedContainer<Long> boundedContainer){
         for(int i = 1; i < trail + 1; i++){
-            dataset.addValue(100, Lock, String.valueOf(i));
+            dataset.addValue(test(operationNumPerThread, totalThreadsNum, boundedContainer), Lock, String.valueOf(i));
         }
     }
 
@@ -102,23 +125,5 @@ public class LockTest {
         Long end = System.currentTimeMillis();
         System.out.println(end-start);
         return end-start;
-    }
-
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-//        LockTest test = new LockTest();
-//        System.out.println("Base: " + test.getBase());
-//        test.computeProcess(test.getTotalAmount(), test.getTrails(), test.getBase());
-//        test.computeGroupsInTrail(test.getTotalAmount(), test.getTrails(), test.getProcessInGroup());
-//        for(int i = 0; i < test.getTrails(); i++){
-//            System.out.println("Process in one group of trail " + (i+1) + ": " + test.getProcessInGroup(i) +
-//                    "; # of Groups in this trail: " + test.getGroupsInTrail(i) +
-//                    ";  Total Amount of Process: " + test.getProcessInGroup(i) * test.getGroupsInTrail(i));
-//        }
-
-//        if (UI.getSpinFlag()) {
-//            Class SpinLockClass = SpinLock.class;
-//            //启动10个读线程和10个写线程
-//            BoundedContainer<Long> boundedContainer = new BoundedContainer<>(10, (Lock) SpinLockClass.getDeclaredConstructor().newInstance());
-//        }
     }
 }

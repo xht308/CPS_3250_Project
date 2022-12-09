@@ -6,6 +6,7 @@ import org.jfree.chart.ui.UIUtils;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -239,11 +240,24 @@ public class UIFrame {
                 LockTest test = new LockTest();
                 test.setTotalAmount(getTotalAmout());
                 test.setTrails(getTrail());
-//                System.out.println(test.getBase());
+                try {
+                    test.SpinBoundedContainer(SpinFlag);
+                    test.MutexBoundedContainer(MutexFlag);
+                    test.MCSBoundedContainer(MCSFlag);
+                    test.CLHBoundedContainer(CLHFlag);
+                    test.TicketBoundedContainer(TicketFlag);
+                } catch (InvocationTargetException ex) {
+                    throw new RuntimeException(ex);
+                } catch (NoSuchMethodException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InstantiationException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException(ex);
+                }
+
 
                 BarChartDemo1 demo = new BarChartDemo1("LineChart", test.getDataset());
-
-//                demo.checkLock(SpinFlag, MutexFlag,MCSFlag, ImprovedMCSFlag);
 //                demo.addData(100000, "MCSLock", "100");
 //                demo.addData(100, "MCSLock", "100000");
 //                demo.addData(100000, "SpinLock", "100000");
