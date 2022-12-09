@@ -1,5 +1,6 @@
 package cn.edu.wku;
 
+import cn.edu.wku.Locks.Utils.LockTest;
 import org.jfree.chart.ui.UIUtils;
 
 import java.awt.Font;
@@ -18,10 +19,13 @@ public class UIFrame {
     private long Trail = 1; //the number of trails
     private long ProcessInGroup; //number of process in a group
 
-    Boolean SpinFlag = false; //Spin Lock is not choose
-    Boolean MutexFlag = false; //Mutex Lock is not choose
-    Boolean MCSFlag = false; //MCS Lock is not choose
-    Boolean ImprovedMCSFlag = false; //Improved MCS Lock is not choose
+    private Boolean SpinFlag = false; //Spin Lock is not choose
+    private Boolean MutexFlag = false; //Mutex Lock is not choose
+    private Boolean MCSFlag = false; //MCS Lock is not choose
+    private Boolean CLHFlag = false; //CLH Lock is not choose
+    private Boolean TicketFlag = false; //Ticket Lock is not choose
+
+//    Boolean ModifiedSpinFlag = false; //modified spin Lock is not choose
 
     JFrame frame = new JFrame();
 
@@ -33,34 +37,33 @@ public class UIFrame {
         return TotalAmout;
     }
 
-    public void setTotalAmout(long totalAmout) {
-        TotalAmout = totalAmout;
-    }
-
     public long getTrail() {
         return Trail;
-    }
-
-    public void setTrail(long Trail) {
-        Trail = Trail;
     }
 
     public boolean getSpinFlag() {
         return SpinFlag;
     }
+
     public boolean getMutexFlag() {
         return MutexFlag;
     }
+
     public boolean getMCSFlag() {
         return MCSFlag;
     }
-    public boolean getImprovedMutexFlag() {
-        return ImprovedMCSFlag;
+
+    public boolean getCLHFlag() {
+        return CLHFlag;
+    }
+
+    public boolean getTicketFlag() {
+        return TicketFlag;
     }
 
     public void init() {
         frame.setTitle("CPS3250 Group2 Final Project");
-        frame.setSize(800,450);
+        frame.setSize(750,450);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -72,13 +75,6 @@ public class UIFrame {
         TitleLabel.setBounds(250, 40, 250, 20);
         TitleLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         frame.add(TitleLabel);
-
-
-//        /**show the number of process in a group*/
-//        JLabel NumLabel = new JLabel("# of process in a group: ");
-//        NumLabel.setBounds(50, 220, 600, 30);
-//        NumLabel.setFont(new Font("Calibri", Font.BOLD, 20));
-//        frame.add(NumLabel);
 
 
         /**require the total amount of process*/
@@ -101,11 +97,6 @@ public class UIFrame {
             public void actionPerformed(ActionEvent e) {
                 try{
                     TotalAmout = Long.parseLong(AmountText.getText());
-//                	System.out.println(TotalAmout);
-//                    if(TotalAmout != 1 && Trail != 1) {
-//                        ProcessInGroup = TotalAmout / GroupNum;
-////                        NumLabel.setText("# of process in a group: " + ProcessInGroup);
-//                    }
                 }catch(NumberFormatException e1) {
                     JOptionPane.showMessageDialog(frame, "Plaese enter a number!");
                 }
@@ -134,17 +125,6 @@ public class UIFrame {
             public void actionPerformed(ActionEvent e) {
                 try{
                     Trail = Long.parseLong(GroupText.getText());
-////                	System.out.println(GroupNum);
-//                    if(GroupNum > TotalAmout) {
-//                        JOptionPane.showMessageDialog(frame, "illegal value");
-//                    }
-//                    else {
-//                        if(TotalAmout != 1 && Trail != 1) {
-//                            ProcessInGroup = (TotalAmout / GroupNum);
-////                			System.out.println(ProcessInGroup);
-////                            NumLabel.setText("# of process in a group: " + ProcessInGroup);
-//                        }
-//                    }
                 }catch(NumberFormatException e1) {
                     JOptionPane.showMessageDialog(frame, "Plaese enter a number!");
                 }
@@ -155,13 +135,13 @@ public class UIFrame {
 
         /**show the lock which is choosed*/
         JTextArea LockChoosed = new JTextArea();
-        LockChoosed.setBounds(540, 240, 180, 80);
+        LockChoosed.setBounds(500, 240, 180, 90);
         frame.add(LockChoosed);
 
         /**buttons to choose the lock*/
         //button of SpinLock
         JButton SpinLock = new JButton("Spin Lock");
-        SpinLock.setBounds(50,270,100,50);
+        SpinLock.setBounds(50,220,100,50);
         SpinLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!SpinFlag) {
@@ -176,7 +156,7 @@ public class UIFrame {
 
         //button of Mutex Lock
         JButton MutexLock = new JButton("Mutex Lock");
-        MutexLock.setBounds(160,270,100,50);
+        MutexLock.setBounds(160,220,100,50);
         MutexLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!MutexFlag) {
@@ -191,7 +171,7 @@ public class UIFrame {
 
         //Button of MCS Lock
         JButton MCSLock = new JButton("MCS Lock");
-        MCSLock.setBounds(270,270,100,50);
+        MCSLock.setBounds(270,220,100,50);
         MCSLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!MCSFlag) {
@@ -204,31 +184,47 @@ public class UIFrame {
         });
         frame.add(MCSLock);
 
-        //Button of Improved MCS Lock
-        JButton ImprovedMCSLock = new JButton("Improved MCS Lock");
-        ImprovedMCSLock.setBounds(380,270,150,50);
-        ImprovedMCSLock.addActionListener(new ActionListener() {
+        //button of CLH Lock
+        JButton CLHLock = new JButton("CLH Lock");
+        CLHLock.setBounds(105,280,100,50);
+        CLHLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(!ImprovedMCSFlag) {
-                    LockChoosed.setText(LockChoosed.getText() + "Improved MCS Lock is choosed\n");
-                    ImprovedMCSFlag = !ImprovedMCSFlag;
+                if(!CLHFlag) {
+                    LockChoosed.setText(LockChoosed.getText() + "CLH Lock is choosed\n");
+                    CLHFlag = !CLHFlag;
                 }else {
                     JOptionPane.showMessageDialog(frame, "This lock is already been choosed.");
                 }
             }
         });
-        frame.add(ImprovedMCSLock);
+        frame.add(CLHLock);
+
+        //button of Ticket Lock
+        JButton TicketLock = new JButton("Ticket Lock");
+        TicketLock.setBounds(215,280,100,50);
+        TicketLock.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(!TicketFlag) {
+                    LockChoosed.setText(LockChoosed.getText() + "Ticket Lock is choosed\n");
+                    TicketFlag = !TicketFlag;
+                }else {
+                    JOptionPane.showMessageDialog(frame, "This lock is already been choosed.");
+                }
+            }
+        });
+        frame.add(TicketLock);
 
         //Button of clear the choosed lock
         JButton Clear = new JButton("claer");
-        Clear.setBounds(540,200,180,30);
+        Clear.setBounds(500,200,180,30);
         Clear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 LockChoosed.setText("");
                 SpinFlag = false;
                 MutexFlag = false;
                 MCSFlag = false;
-                ImprovedMCSFlag = false;
+                CLHFlag = false;
+                TicketFlag = false;
             }
         });
         frame.add(Clear);
@@ -236,10 +232,12 @@ public class UIFrame {
 
         /**"Generate" button*/
         JButton button = new JButton("Generate");
-        button.setBounds(540,100,180,60);
+        button.setBounds(500,100,180,60);
         button.setFont(new Font("Calibri", Font.BOLD, 20));
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                LockTest test = new LockTest();
+                System.out.println(test.getBase());
                 BarChartDemo1 demo = new BarChartDemo1("LineChart");
 //                demo.checkLock(SpinFlag, MutexFlag,MCSFlag, ImprovedMCSFlag);
                 demo.addData(100000, "MCSLock", "100");
