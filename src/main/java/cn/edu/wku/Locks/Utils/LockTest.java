@@ -11,19 +11,25 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 
 public class LockTest {
-    UIFrame UI = new UIFrame();
-    private long TotalAmount = UI.getTotalAmout();
-    private long Trails = UI.getTrail();
-//    private double TotalAmount = 3000;
-//    private double Trails = 10;
+    private long TotalAmount;
+    private long Trails = 1;
     private int Base = (int)(Math.pow(TotalAmount, 1.0/Trails));
     private int[] ProcessInGroup = new int[(int) Trails]; //store the # of process in each trails of group
     private int[] GroupsInTrail = new int[(int) Trails];
     DefaultCategoryDataset dataset = new DefaultCategoryDataset(); //用于存放运行时间，锁，trail
 
+    public void setTotalAmount(long totalAmount) {
+        TotalAmount = totalAmount;
+    }
+
+    public void setTrails(long trails) {
+        Trails = trails;
+    }
+
     public int getBase() {
         return Base;
     }
+
     public DefaultCategoryDataset getDataset() {
         return dataset;
     }

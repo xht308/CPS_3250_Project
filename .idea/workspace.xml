@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="Fix the performance issue of locks with busy waiting pattern">
+    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BarChartDemo1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BarChartDemo1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/Utils/LockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/Utils/LockTest.java" afterDir="false" />
@@ -202,7 +202,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670599312223</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="test">
+      <created>1670606269333</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1670606269333</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -229,7 +236,8 @@
     <MESSAGE value="CLH Lock implementation" />
     <MESSAGE value="MCSLock implementation" />
     <MESSAGE value="Fix the performance issue of locks with busy waiting pattern" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix the performance issue of locks with busy waiting pattern" />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -20,7 +20,7 @@ public class BarChartDemo1 extends ApplicationFrame {
 
     private static final long serialVersionUID = 1L;
     static String LockChoose = null;
-    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
      static UIFrame UIFrame = new UIFrame();
 
     public static String getLockChoose() {
@@ -36,7 +36,7 @@ public class BarChartDemo1 extends ApplicationFrame {
      *
      * @param title  the frame title.
      */
-    public BarChartDemo1(String title) {
+    public BarChartDemo1(String title, CategoryDataset dataset) {
         super(title);
         JFreeChart chart = createChart(dataset);
         ChartPanel chartPanel = new ChartPanel(chart, false);
@@ -47,24 +47,6 @@ public class BarChartDemo1 extends ApplicationFrame {
         setResizable(false);
     }
 
-//    public void addData(long time, String Lock, String xAxis) {
-//        dataset.addValue(time, Lock, xAxis);
-//    }
-
-//    public static void checkLock(Boolean SpinFlag, Boolean MutexFlag, Boolean MCSFlag, Boolean ImprovedMCSFlag){
-//        if(SpinFlag){
-//            LockChoose = LockChoose + "SpinLock ";
-//        }if(MutexFlag){
-//            LockChoose = LockChoose + "MutexLock ";
-//        }if(MCSFlag){
-//            LockChoose = LockChoose + "MCSLock ";
-//        }if(ImprovedMCSFlag){
-//            LockChoose = LockChoose + "ImprovedMCSLock ";
-//        }
-//        System.out.println("choose");
-//        System.out.println(getLockChoose());
-////        return LockChoose;
-//    }
 
     /**
      * Creates a sample chart.

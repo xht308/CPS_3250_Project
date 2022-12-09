@@ -237,8 +237,12 @@ public class UIFrame {
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 LockTest test = new LockTest();
-                System.out.println(test.getBase());
-                BarChartDemo1 demo = new BarChartDemo1("LineChart");
+                test.setTotalAmount(getTotalAmout());
+                test.setTrails(getTrail());
+//                System.out.println(test.getBase());
+
+                BarChartDemo1 demo = new BarChartDemo1("LineChart", test.getDataset());
+
 //                demo.checkLock(SpinFlag, MutexFlag,MCSFlag, ImprovedMCSFlag);
 //                demo.addData(100000, "MCSLock", "100");
 //                demo.addData(100, "MCSLock", "100000");
