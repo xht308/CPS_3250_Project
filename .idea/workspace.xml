@@ -4,20 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="MCSLock implementation">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ClassicCLHLock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ClassicMCSLock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ClassicSpinLock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ClassicTicketLock.java" afterDir="false" />
+    <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="Fix the performance issue of locks with busy waiting pattern">
       <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/ExampleSpinLock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/CLHLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/CLHLock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/MCSLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/MCSLock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/MutexLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/MutexLock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/SpinLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/SpinLock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/TicketLock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/TicketLock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/Utils/ConcurrentQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/Utils/ConcurrentQueue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/WorkLoad/BoundedContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/WorkLoad/BoundedContainer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -157,7 +148,7 @@
       <workItem from="1670325455963" duration="135000" />
       <workItem from="1670431313408" duration="1264000" />
       <workItem from="1670475025162" duration="14811000" />
-      <workItem from="1670571560696" duration="18030000" />
+      <workItem from="1670571560696" duration="20713000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1670061433070</created>
@@ -208,7 +199,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670581515400</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fix the performance issue of locks with busy waiting pattern">
+      <created>1670599312223</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1670599312223</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,7 +232,8 @@
     <MESSAGE value="Bug Fix &amp; Ticket Lock implementation" />
     <MESSAGE value="CLH Lock implementation" />
     <MESSAGE value="MCSLock implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="MCSLock implementation" />
+    <MESSAGE value="Fix the performance issue of locks with busy waiting pattern" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix the performance issue of locks with busy waiting pattern" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
