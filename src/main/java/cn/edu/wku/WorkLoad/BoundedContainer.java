@@ -4,6 +4,7 @@ import cn.edu.wku.Locks.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.locks.Lock;
 
 public class BoundedContainer<E> {
@@ -109,43 +110,111 @@ public class BoundedContainer<E> {
 
     // Testing
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        // Create a bounded container with customized lock class
-        BoundedContainer<Long> boundedContainer = new BoundedContainer<>(10, MutexLock.class);
+//        System.out.println(test(1000, 100, SpinLock.class));
+        System.out.println(test(10, 1000, MutexLock.class));
+//        // Create a bounded container with customized lock class
+//        BoundedContainer<Long> boundedContainer = new BoundedContainer<>(10, MutexLock.class);
+//
+//        // The number of threads
+//        int putTakeOperationNum = 5000;
+////        int takeThreadNum = 200;
+////        int putThreadNum = 200;
+//
+//        ArrayList<Thread> threads = new ArrayList<>();
+//
+//        for (int i = 0; i < putTakeOperationNum; i++) {
+//            threads.add(new Thread(() -> {
+//                try {
+//                    boundedContainer.put(System.nanoTime());
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }));
+//            threads.add(new Thread(() -> {
+//                try {
+//                    boundedContainer.take();
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }));
+//        }
+//
+////        for (int i = 0; i < putThreadNum; i++) {
+////
+////        }
+//
+//        Long start = System.currentTimeMillis();
+//
+//        // Start the threads
+//        for (Thread thread: threads) thread.start();
+//
+//        // Join the threads
+//        for (Thread thread: threads) {
+//            try {
+//                thread.join();
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        Long end = System.currentTimeMillis();
+//        // Print the execution time
+//        System.out.println(end-start);
+    }
 
-        // The number of threads
-        int putTakeOperationNum = 5000;
-//        int takeThreadNum = 200;
-//        int putThreadNum = 200;
+    public static long test(int operationNumPerThread, int totalThreadsNum, Class<? extends Lock> lockClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        return test(operationNumPerThread, totalThreadsNum, lockClass.getDeclaredConstructor().newInstance());
+    }
 
+    public static long test(int operationNumPerThread, int totalThreadsNum, Lock lock) {
+
+        // Create container instance
+        BoundedContainer<Long> boundedContainer = new BoundedContainer<>(DEFAULT_CAPACITY, lock);
+
+        // Prepare threads
         ArrayList<Thread> threads = new ArrayList<>();
-
-        for (int i = 0; i < putTakeOperationNum; i++) {
-            threads.add(new Thread(() -> {
+        // Two types of threads
+        // Put n elements to the container
+        class putThread extends Thread {
+            @Override
+            public void run() {
                 try {
-                    boundedContainer.put(System.nanoTime());
+                    for (int i = 0; i < operationNumPerThread; i++) {
+                        boundedContainer.put(System.nanoTime());
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }));
-            threads.add(new Thread(() -> {
+            }
+        }
+        // Take n elements from the container
+        class takeThread extends Thread {
+            @Override
+            public void run() {
                 try {
-                    boundedContainer.take();
+                    for (int i = 0; i < operationNumPerThread; i++) {
+                        boundedContainer.take();
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }));
+            }
         }
 
-//        for (int i = 0; i < putThreadNum; i++) {
-//
-//        }
+        // Add threads to list
+        for (int i = 0; i < totalThreadsNum; i++) {
+            threads.add(new putThread());
+            threads.add(new takeThread());
+        }
+        Collections.shuffle(threads);
 
+        // Start timing
         Long start = System.currentTimeMillis();
 
-        // Start the threads
+        // Start all threads
         for (Thread thread: threads) thread.start();
 
-        // Join the threads
+        // Wait for all threads to finish
         for (Thread thread: threads) {
             try {
                 thread.join();
@@ -154,8 +223,11 @@ public class BoundedContainer<E> {
             }
         }
 
+        // Stop timing
         Long end = System.currentTimeMillis();
-        // Print the execution time
-        System.out.println(end-start);
+//        System.out.println(end-start);
+
+        // Return time cost
+        return end-start;
     }
 }

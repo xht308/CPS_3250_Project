@@ -22,10 +22,10 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Thread thread = queue.poll();
+        Thread thread = queue.poll().getObj();
         while (thread != null) {
             System.out.println(thread);
-            thread = queue.poll();
+            thread = queue.poll().getObj();
         }
     }
 }

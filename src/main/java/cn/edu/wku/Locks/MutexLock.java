@@ -3,11 +3,11 @@ package cn.edu.wku.Locks;
 import cn.edu.wku.Locks.Utils.ConcurrentQueue;
 
 import java.util.Date;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MutexLock implements Lock {
 
@@ -19,6 +19,8 @@ public class MutexLock implements Lock {
 
 //    private final ConcurrentLinkedQueue<Thread> queue = new ConcurrentLinkedQueue<>();
 
+//    private final LinkedTransferQueue<Thread> queue = new LinkedTransferQueue<>();
+
     public MutexLock() {
 
     }
@@ -26,9 +28,9 @@ public class MutexLock implements Lock {
     @Override
     public void lock() {
         // Add the thread to the waiting queue
-        queue.offer(Thread.currentThread());
+        boolean isTheFirstThread = queue.offer(Thread.currentThread());
         // is the first thread in the queue --> continue execution
-        if (queue.peek() == Thread.currentThread()) return;
+        if (isTheFirstThread) return;
         // is not --> sleep until waken by other threads
         LockSupport.park();
         // Ignore interruptions here since it is not the emphasis of the project
@@ -37,9 +39,9 @@ public class MutexLock implements Lock {
     @Override
     public void lockInterruptibly() throws InterruptedException {
         // Add the thread to the waiting queue
-        queue.offer(Thread.currentThread());
+        boolean isTheFirstThread = queue.offer(Thread.currentThread());
         // is the first thread in the queue --> continue execution
-        if (queue.peek() == Thread.currentThread()) return;
+        if (isTheFirstThread) return;
         // is not --> sleep until waken by other threads
         LockSupport.park();
         if (Thread.interrupted()) throw new InterruptedException();
@@ -76,11 +78,14 @@ public class MutexLock implements Lock {
     @Override
     public void unlock() {
         // Remove the current thread
-        queue.poll();
+        boolean isTheLastThread = queue.poll().getBoolean();
+        // If the polled thread is the last thread when polling --> continue without waking
+        if (isTheLastThread) return;
+        // if not --> wake the next waiting thread
         // Get the next thread
         Thread next = queue.peek();
-        //  if next thread exist --> wake it up (deliver the lock)
-        if (next != null) LockSupport.unpark(next);
+        //  Wake it up (deliver the lock)
+        LockSupport.unpark(next);
     }
 
     @Override

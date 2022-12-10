@@ -55,39 +55,43 @@ public class ConcurrentQueue<E> {
 
     // Add the thread to the waiting queue
     // Helper method
-    public void offer(E element) {
-        enqueue(new Node<>(element));
+    public boolean offer(E element) {
+        return enqueue(new Node<>(element));
     }
 
     // Add the node to the waiting queue
     // Critical section (Can be accessed by multiple threads at a time)
     // Protected by the optimistic lock
-    private void enqueue(Node<E> node) {
+    private boolean enqueue(Node<E> node) {
         // Set the node as the last node (tail)
         Node<E> tempTail = tail.get();
         while (!tail.compareAndSet(tempTail, node)) tempTail = tail.get();
 //        // Contact the node to the previous node
 //        node.setPrev(tempTail);
         // is the first node --> set head
-        if (tempTail == null) head.set(node);
+        if (tempTail == null) {
+            head.set(node);
+            return true;
+        }
         // is not --> set the next pointer of the previous node
         else {
             tempTail.setNext(node);
             // In case the previous node is head and been removed during the process
             head.compareAndSet(null, node);
+            return false;
         }
     }
 
     // Extract a thread from the waiting queue
-    public E poll() {
-        Node<E> temp = dequeue();
-        return temp == null? null: temp.getElement();
+    public ObjWithBoolean<E> poll() {
+        ObjWithBoolean<Node<E>> temp = dequeue();
+        return temp == null? null: new ObjWithBoolean<>(temp.getObj().getElement(), temp.getBoolean());
     }
 
 
     // Extract a node from the waiting queue
     // Not a critical section (Only the unlock operation will access this method)
-    private Node<E> dequeue() {
+    private ObjWithBoolean<Node<E>> dequeue() {
         // Check if there is any elements in the queue --> null
         if (tail.get() == null) return null;
         // Obtain the head node
@@ -96,11 +100,11 @@ public class ConcurrentQueue<E> {
         //  as it can temporarily be null (check enqueue())
         while (ret == null) ret = head.get();
         // Set tail pointer to null if it is the same as the head pointer
-        tail.compareAndSet(ret, null);
+        boolean isLastElement = tail.compareAndSet(ret, null);
         // Set head pointer to the next node
         head.compareAndSet(ret, ret.getNext());
         // Return the node
-        return ret;
+        return new ObjWithBoolean<>(ret, isLastElement);
     }
 
     // Get the first thread in the queue
