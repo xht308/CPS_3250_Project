@@ -5,14 +5,10 @@ package cn.edu.wku;
 import cn.edu.wku.Locks.Utils.ConcurrentQueue;
 
 public class Main {
-//    public static void main(String[] args) {
-//        UIFrame UIFrame = new UIFrame();
-//        UIFrame.init();
-//
-//        System.out.println("Hello world!");
-//    }
-
     public static void main(String[] args) {
+        UIFrame UIFrame = new UIFrame();
+        UIFrame.init();
+
         ConcurrentQueue<Thread> queue = new ConcurrentQueue<>();
         for (int i = 0; i < 10; i++) {
             new Thread(() -> queue.offer(Thread.currentThread())).start();

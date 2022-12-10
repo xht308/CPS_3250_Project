@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="87c0d24e-ce40-4e55-9d95-0b67bb8e77f0" name="变更" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BarChartDemo1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/BarChartDemo1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/Utils/LockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Locks/Utils/LockTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/UIFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/UIFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/wku/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +78,7 @@
       <recent name="cn.edu.wku.Locks" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.BoundedContainer">
+  <component name="RunManager">
     <configuration name="BoundedContainer" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="cn.edu.wku.WorkLoad.BoundedContainer" />
       <module name="CPS_3250_Project" />
@@ -216,7 +214,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670607359635</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="test">
+      <created>1670609375666</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1670609375666</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
