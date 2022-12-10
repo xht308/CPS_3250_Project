@@ -134,7 +134,7 @@ public class UIFrame {
         frame.add(sure2);
 
 
-        /**show the lock which is choosed*/
+        /**show the lock which is chosen*/
         JTextArea LockChoosed = new JTextArea();
         LockChoosed.setBounds(500, 240, 180, 90);
         frame.add(LockChoosed);
@@ -146,10 +146,10 @@ public class UIFrame {
         SpinLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!SpinFlag) {
-                    LockChoosed.setText(LockChoosed.getText() + "Spin Lock is choosed\n");
+                    LockChoosed.setText(LockChoosed.getText() + "Spin Lock is chosen\n");
                     SpinFlag = !SpinFlag;
                 }else {
-                    JOptionPane.showMessageDialog(frame, "This lock is already been choosed.");
+                    JOptionPane.showMessageDialog(frame, "This lock is already been chosen.");
                 }
             }
         });
@@ -161,10 +161,10 @@ public class UIFrame {
         MutexLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!MutexFlag) {
-                    LockChoosed.setText(LockChoosed.getText() + "Mutex Lock is choosed\n");
+                    LockChoosed.setText(LockChoosed.getText() + "Mutex Lock is chosen\n");
                     MutexFlag = !MutexFlag;
                 }else {
-                    JOptionPane.showMessageDialog(frame, "This lock is already been choosed.");
+                    JOptionPane.showMessageDialog(frame, "This lock is already been chosen.");
                 }
             }
         });
@@ -176,10 +176,10 @@ public class UIFrame {
         MCSLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!MCSFlag) {
-                    LockChoosed.setText(LockChoosed.getText() + "MCS Lock is choosed\n");
+                    LockChoosed.setText(LockChoosed.getText() + "MCS Lock is chosen\n");
                     MCSFlag = !MCSFlag;
                 }else {
-                    JOptionPane.showMessageDialog(frame, "This lock is already been choosed.");
+                    JOptionPane.showMessageDialog(frame, "This lock is already been chosen.");
                 }
             }
         });
@@ -191,10 +191,10 @@ public class UIFrame {
         CLHLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!CLHFlag) {
-                    LockChoosed.setText(LockChoosed.getText() + "CLH Lock is choosed\n");
+                    LockChoosed.setText(LockChoosed.getText() + "CLH Lock is chosen\n");
                     CLHFlag = !CLHFlag;
                 }else {
-                    JOptionPane.showMessageDialog(frame, "This lock is already been choosed.");
+                    JOptionPane.showMessageDialog(frame, "This lock is already been chosen.");
                 }
             }
         });
@@ -206,10 +206,10 @@ public class UIFrame {
         TicketLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!TicketFlag) {
-                    LockChoosed.setText(LockChoosed.getText() + "Ticket Lock is choosed\n");
+                    LockChoosed.setText(LockChoosed.getText() + "Ticket Lock is chosen\n");
                     TicketFlag = !TicketFlag;
                 }else {
-                    JOptionPane.showMessageDialog(frame, "This lock is already been choosed.");
+                    JOptionPane.showMessageDialog(frame, "This lock is already been chosen.");
                 }
             }
         });
