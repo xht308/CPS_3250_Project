@@ -111,8 +111,8 @@ public class BoundedContainer<E> {
 
     // Testing
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        long timeCost = test(1, 100000, DoubleMLock.class);
-        System.out.println(timeCost == -1? "time out": timeCost);
+        long timeCost = test(1, 5000, SpinLock.class);
+        System.out.println(timeCost < 0? "time out": timeCost);
     }
 
     public static long test(int operationNumPerThread, int totalPutTakePairNum, Class<? extends Lock> lockClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -185,6 +185,7 @@ public class BoundedContainer<E> {
         // Wait for all threads to finish
         for (Thread thread: threads) {
             try {
+                int attemptCount = 0;
                 while (thread.isAlive()) {
                     // If exceeds the time limit --> stop all threads
                     if (System.currentTimeMillis() > deadLine) {
@@ -194,6 +195,10 @@ public class BoundedContainer<E> {
                     }
                     // Wait the thread to finish
                     else thread.join(10);
+                    if (++attemptCount == 1000) {
+                        Thread.yield();
+                        attemptCount = 0;
+                    }
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -203,7 +208,9 @@ public class BoundedContainer<E> {
         // Stop timing
         long end = System.currentTimeMillis();
 
+        if (timeOutFlag) System.out.println("Time out");
+
         // Return time cost
-        return timeOutFlag? -1: (end-start);
+        return timeOutFlag? (start-end): (end-start);
     }
 }

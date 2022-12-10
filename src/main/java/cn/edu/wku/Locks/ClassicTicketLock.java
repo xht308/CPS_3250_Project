@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
+@Deprecated
 public class ClassicTicketLock implements Lock {
 
     // Store the number of next ticket

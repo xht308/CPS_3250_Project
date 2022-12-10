@@ -24,7 +24,7 @@ public class MutexLock implements Lock {
         boolean isTheFirstThread = queue.offer(Thread.currentThread());
         // is the first thread in the queue --> continue execution
         if (isTheFirstThread) return;
-        // is not --> sleep until waken by other threads
+        // is not --> sleep until woken by other threads
         LockSupport.park();
         // Ignore interruptions here since it is not the emphasis of the project
     }
@@ -35,7 +35,7 @@ public class MutexLock implements Lock {
         boolean isTheFirstThread = queue.offer(Thread.currentThread());
         // is the first thread in the queue --> continue execution
         if (isTheFirstThread) return;
-        // is not --> sleep until waken by other threads
+        // is not --> sleep until woken by other threads
         LockSupport.park();
         if (Thread.interrupted()) throw new InterruptedException();
     }

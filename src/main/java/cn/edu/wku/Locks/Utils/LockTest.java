@@ -65,7 +65,7 @@ public class LockTest {
     public void builtDataset(Class<? extends Lock> lockClass, String Lock, long trail) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         for(int i = 0; i < trail; i++){
             long time = BoundedContainer.test(ProcessInGroup[i], GroupsInTrail[i], lockClass);
-            if(time > 0){
+            if(time >= 0){
                 dataset.addValue(time, Lock, String.valueOf(i+1));
             }
         }

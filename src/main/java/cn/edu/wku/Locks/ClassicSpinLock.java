@@ -8,6 +8,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;
 
+@Deprecated
 public class ClassicSpinLock implements Lock  {
 
     // The lock indicator using atomic operations

@@ -1,12 +1,10 @@
 package cn.edu.wku.Locks;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
-
+@Deprecated
 public class ClassicCLHLock implements Lock {
 
     // Initial tail
@@ -82,7 +80,7 @@ public class ClassicCLHLock implements Lock {
     }
 
     @Override
-    public boolean tryLock(long time, @NotNull TimeUnit unit) throws InterruptedException {
+    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
         throw new UnsupportedOperationException();
     }
 
