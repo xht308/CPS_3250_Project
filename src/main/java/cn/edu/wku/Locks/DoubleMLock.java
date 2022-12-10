@@ -37,7 +37,7 @@ public class DoubleMLock implements Lock {
         //  one for the main method
         //  the other for Garbage Collection
         // Mutex Lock takes one thread to try adding nodes to MCS queue
-        this(Math.max(getCPUCoreNum(), 1));
+        this(Math.max(getCPUCoreNum()-3, 1));
     }
 
     public DoubleMLock(int maxSpinningNodesNum) {
