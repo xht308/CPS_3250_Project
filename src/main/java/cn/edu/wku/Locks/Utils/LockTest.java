@@ -1,11 +1,9 @@
 package cn.edu.wku.Locks.Utils;
 
-import cn.edu.wku.Locks.*;
 import cn.edu.wku.WorkLoad.BoundedContainer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 
 public class LockTest {
@@ -66,7 +64,10 @@ public class LockTest {
     //计算锁在所有trail内的运行时间，并将结果加入dataset
     public void builtDataset(Class<? extends Lock> lockClass, String Lock, long trail) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         for(int i = 0; i < trail; i++){
-            dataset.addValue(BoundedContainer.test(ProcessInGroup[i], GroupsInTrail[i], lockClass), Lock, String.valueOf(i+1));
+            long time = BoundedContainer.test(ProcessInGroup[i], GroupsInTrail[i], lockClass);
+            if(time > 0){
+                dataset.addValue(time, Lock, String.valueOf(i+1));
+            }
         }
     }
 }

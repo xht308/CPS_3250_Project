@@ -6,7 +6,6 @@ package cn.edu.wku;
         import org.jfree.chart.axis.NumberAxis;
         import org.jfree.chart.block.BlockBorder;
         import org.jfree.chart.plot.CategoryPlot;
-        import org.jfree.chart.title.TextTitle;
         import org.jfree.chart.ui.ApplicationFrame;
         import org.jfree.data.category.CategoryDataset;
 
@@ -47,9 +46,6 @@ public class BarChartDemo1 extends ApplicationFrame {
         JFreeChart chart = ChartFactory.createLineChart(
                 "Performance of different lock", "number of trails" /* x-axis label*/,
                 "Milliseconds" /* y-axis label */, dataset);
-//        checkLock(UIFrame.getSpinFlag(), UIFrame.getMutexFlag(), UIFrame.getMCSFlag(), UIFrame.getImprovedMutexFlag());
-//        System.out.println(LockChoose);
-//        chart.addSubtitle(new TextTitle(LockChoose));
 
         chart.setBackgroundPaint(Color.WHITE);
         CategoryPlot plot = (CategoryPlot) chart.getPlot();

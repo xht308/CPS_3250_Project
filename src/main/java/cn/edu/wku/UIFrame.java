@@ -1,6 +1,5 @@
 package cn.edu.wku;
 
-import cn.edu.wku.Locks.SpinLock;
 import cn.edu.wku.Locks.Utils.LockTest;
 import org.jfree.chart.ui.UIUtils;
 
@@ -19,15 +18,11 @@ import javax.swing.JTextField;
 public class UIFrame {
     private long TotalAmout = 1; //total amount of the process
     private long Trail = 1; //the number of trails
-    private long ProcessInGroup; //number of process in a group
-
     private Boolean SpinFlag = false; //Spin Lock is not choose
     private Boolean MutexFlag = false; //Mutex Lock is not choose
     private Boolean MCSFlag = false; //MCS Lock is not choose
     private Boolean CLHFlag = false; //CLH Lock is not choose
     private Boolean TicketFlag = false; //Ticket Lock is not choose
-
-//    Boolean ModifiedSpinFlag = false; //modified spin Lock is not choose
 
     JFrame frame = new JFrame();
 
@@ -197,7 +192,7 @@ public class UIFrame {
         frame.add(TicketLock);
 
         //Button of clear the chosen lock
-        JButton Clear = new JButton("claer");
+        JButton Clear = new JButton("clear");
         Clear.setBounds(500,200,180,30);
         Clear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -218,49 +213,42 @@ public class UIFrame {
         button.setFont(new Font("Calibri", Font.BOLD, 20));
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LockTest test = new LockTest();
-                test.setTotalAmount(getTotalAmout());
-                test.setTrails(getTrail());
-                test.setBase(test.getTotalAmount(), test.getTrails());
-                test.computeProcess(test.getTotalAmount(), test.getTrails(), test.getBase());
-                test.computeGroupsInTrail(test.getTotalAmount(), test.getTrails(), test.getProcessInGroup());
+                if(getTotalAmout() == 1 && getTrail() == 1){
+                    JOptionPane.showMessageDialog(frame, "Please make sure your entered.");
+                }else{
+                    LockTest test = new LockTest();
+                    test.setTotalAmount(getTotalAmout());
+                    test.setTrails(getTrail());
+                    test.setBase(test.getTotalAmount(), test.getTrails());
+                    test.computeProcess(test.getTotalAmount(), test.getTrails(), test.getBase());
+                    test.computeGroupsInTrail(test.getTotalAmount(), test.getTrails(), test.getProcessInGroup());
 
-                try {
-                    if(SpinFlag){
-                        test.builtDataset(cn.edu.wku.Locks.SpinLock.class, "Spin Lock", getTrail());
+                    try {
+                        if(SpinFlag){
+                            test.builtDataset(cn.edu.wku.Locks.SpinLock.class, "Spin Lock", getTrail());
+                        }
+                        if(MutexFlag){
+                            test.builtDataset(cn.edu.wku.Locks.MutexLock.class, "Mutex Lock", getTrail());
+                        }
+                        if(MCSFlag){
+                            test.builtDataset(cn.edu.wku.Locks.MCSLock.class, "MCS Lock", getTrail());
+                        }
+                        if(CLHFlag){
+                            test.builtDataset(cn.edu.wku.Locks.CLHLock.class, "CLH Lock", getTrail());
+                        }
+                        if(TicketFlag){
+                            test.builtDataset(cn.edu.wku.Locks.TicketLock.class, "Ticket Lock", getTrail());
+                        }
+                    } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                             IllegalAccessException ex) {
+                        throw new RuntimeException(ex);
                     }
-                    if(MutexFlag){
-                        test.builtDataset(cn.edu.wku.Locks.MutexLock.class, "Mutex Lock", getTrail());
-                    }
-                    if(MCSFlag){
-                        test.builtDataset(cn.edu.wku.Locks.MCSLock.class, "MCS Lock", getTrail());
-                    }
-                    if(CLHFlag){
-                        test.builtDataset(cn.edu.wku.Locks.CLHLock.class, "CLH Lock", getTrail());
-                    }
-                    if(TicketFlag){
-                        test.builtDataset(cn.edu.wku.Locks.TicketLock.class, "Ticket Lock", getTrail());
-                    }
-                } catch (InvocationTargetException ex) {
-                    throw new RuntimeException(ex);
-                } catch (NoSuchMethodException ex) {
-                    throw new RuntimeException(ex);
-                } catch (InstantiationException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IllegalAccessException ex) {
-                    throw new RuntimeException(ex);
+
+                    BarChartDemo1 demo = new BarChartDemo1("LineChart", test.getDataset());
+                    demo.pack();
+                    UIUtils.centerFrameOnScreen(demo);
+                    demo.setVisible(true);
                 }
-
-                BarChartDemo1 demo = new BarChartDemo1("LineChart", test.getDataset());
-//                demo.addData(100000, "MCSLock", "100");
-//                demo.addData(100, "MCSLock", "100000");
-//                demo.addData(100000, "SpinLock", "100000");
-//                demo.addData(100, "SpinLock", "100");
-//                demo.addData(50000, "MutexLock", "1000");
-//                demo.addData(50000, "MutexLock", "10000");
-                demo.pack();
-                UIUtils.centerFrameOnScreen(demo);
-                demo.setVisible(true);
             }
         });
         frame.add(button);
