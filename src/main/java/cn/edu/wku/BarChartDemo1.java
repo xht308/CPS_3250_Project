@@ -10,13 +10,15 @@ package cn.edu.wku;
         import org.jfree.data.category.CategoryDataset;
 
         import java.awt.*;
+        import java.io.Serial;
 
 /**
  * A simple demonstration application showing how to create a bar chart.
  */
 public class BarChartDemo1 extends ApplicationFrame {
 
-    private static final long serialVersionUID = 1L;
+//    @Serial
+//    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new demo instance.
@@ -45,7 +47,7 @@ public class BarChartDemo1 extends ApplicationFrame {
     private static JFreeChart createChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createLineChart(
                 "Performance of different lock", "number of trails" /* x-axis label*/,
-                "Milliseconds" /* y-axis label */, dataset);
+                "Time/Milliseconds" /* y-axis label */, dataset);
 
         chart.setBackgroundPaint(Color.WHITE);
         CategoryPlot plot = (CategoryPlot) chart.getPlot();

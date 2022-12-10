@@ -18,11 +18,12 @@ import javax.swing.JTextField;
 public class UIFrame {
     private long TotalAmout = 1; //total amount of the operations
     private long Trail = 1; //the number of trails
-    private Boolean SpinFlag = false; //Spin Lock is not choose
-    private Boolean MutexFlag = false; //Mutex Lock is not choose
-    private Boolean MCSFlag = false; //MCS Lock is not choose
-    private Boolean CLHFlag = false; //CLH Lock is not choose
-    private Boolean TicketFlag = false; //Ticket Lock is not choose
+    private Boolean SpinFlag = false; //Spin Lock is not chosen
+    private Boolean MutexFlag = false; //Mutex Lock is not chosen
+    private Boolean MCSFlag = false; //MCS Lock is not chosen
+    private Boolean CLHFlag = false; //CLH Lock is not chosen
+    private Boolean TicketFlag = false; //Ticket Lock is not chosen
+    private Boolean DoubleMFlag = false; //DoubleM Lock is not chosen
 
     JFrame frame = new JFrame();
 
@@ -163,7 +164,7 @@ public class UIFrame {
 
         //button of CLH Lock
         JButton CLHLock = new JButton("CLH Lock");
-        CLHLock.setBounds(105,280,100,50);
+        CLHLock.setBounds(50,280,100,50);
         CLHLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!CLHFlag) {
@@ -178,7 +179,7 @@ public class UIFrame {
 
         //button of Ticket Lock
         JButton TicketLock = new JButton("Ticket Lock");
-        TicketLock.setBounds(215,280,100,50);
+        TicketLock.setBounds(160,280,100,50);
         TicketLock.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(!TicketFlag) {
@@ -191,6 +192,21 @@ public class UIFrame {
         });
         frame.add(TicketLock);
 
+        //button of DoubleM Lock
+        JButton DoubleMLock = new JButton("DoubleM Lock");
+        DoubleMLock.setBounds(270,280,120,50);
+        DoubleMLock.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(!DoubleMFlag) {
+                    LockChoosed.setText(LockChoosed.getText() + "DoubleM Lock is chosen\n");
+                    DoubleMFlag = !DoubleMFlag;
+                }else {
+                    JOptionPane.showMessageDialog(frame, "This lock is already been chosen.");
+                }
+            }
+        });
+        frame.add(DoubleMLock);
+
         //Button of clear the chosen lock
         JButton Clear = new JButton("clear");
         Clear.setBounds(500,200,180,30);
@@ -202,6 +218,7 @@ public class UIFrame {
                 MCSFlag = false;
                 CLHFlag = false;
                 TicketFlag = false;
+                DoubleMFlag = false;
             }
         });
         frame.add(Clear);
@@ -243,6 +260,9 @@ public class UIFrame {
                             }
                             if(TicketFlag){
                                 test.builtDataset(cn.edu.wku.Locks.TicketLock.class, "Ticket Lock", getTrail());
+                            }
+                            if(DoubleMFlag){
+                                test.builtDataset(cn.edu.wku.Locks.DoubleMLock.class, "DoubleM Lock", getTrail());
                             }
                         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
                                  IllegalAccessException ex) {
