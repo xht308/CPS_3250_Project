@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class UIFrame {
-    private long TotalAmout = 1; //total amount of the process
+    private long TotalAmout = 1; //total amount of the operations
     private long Trail = 1; //the number of trails
     private Boolean SpinFlag = false; //Spin Lock is not choose
     private Boolean MutexFlag = false; //Mutex Lock is not choose
@@ -54,21 +54,21 @@ public class UIFrame {
         frame.add(TitleLabel);
 
 
-        /**require the total amount of process*/
+        /**require the total amount of operations*/
         //Label
-        JLabel AmountLabel = new JLabel("Total amount of process: ");
-        AmountLabel.setBounds(50, 100, 220, 30);
+        JLabel AmountLabel = new JLabel("Total amount of operations: ");
+        AmountLabel.setBounds(50, 100, 250, 30);
         AmountLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         frame.add(AmountLabel);
 
         //Text
         JTextField AmountText = new JTextField();
-        AmountText.setBounds(270, 100, 100, 30);
+        AmountText.setBounds(290, 100, 100, 30);
         frame.add(AmountText);
 
         //Button
         JButton sure1 = new JButton("sure");
-        sure1.setBounds(380,100,70,30);
+        sure1.setBounds(400,100,70,30);
         sure1.setFont(new Font("Calibri", Font.BOLD, 20));
         sure1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
