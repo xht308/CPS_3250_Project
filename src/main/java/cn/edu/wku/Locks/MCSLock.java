@@ -1,7 +1,5 @@
 package cn.edu.wku.Locks;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
@@ -103,7 +101,7 @@ public class MCSLock implements Lock {
     }
 
     @Override
-    public boolean tryLock(long time, @NotNull TimeUnit unit) throws InterruptedException {
+    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
         // Get the deadline of lock attempts
         long deadline = System.nanoTime() + unit.toNanos(time);
         int attemptCount = 0;
@@ -146,7 +144,6 @@ public class MCSLock implements Lock {
         current.unlockNext();
     }
 
-    @NotNull
     @Override
     public Condition newCondition() {
         throw new UnsupportedOperationException();

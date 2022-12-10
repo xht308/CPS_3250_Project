@@ -5,6 +5,7 @@ import cn.edu.wku.Locks.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
 public class BoundedContainer<E> {
@@ -111,7 +112,8 @@ public class BoundedContainer<E> {
     // Testing
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 //        System.out.println(test(1000, 100, SpinLock.class));
-        System.out.println(test(10, 1000, MutexLock.class));
+        Long timeCost = test(50, 2000, MCSLock.class);
+        System.out.println(timeCost == null? "time out": timeCost);
 //        // Create a bounded container with customized lock class
 //        BoundedContainer<Long> boundedContainer = new BoundedContainer<>(10, MutexLock.class);
 //
@@ -162,11 +164,22 @@ public class BoundedContainer<E> {
 //        System.out.println(end-start);
     }
 
-    public static long test(int operationNumPerThread, int totalThreadsNum, Class<? extends Lock> lockClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        return test(operationNumPerThread, totalThreadsNum, lockClass.getDeclaredConstructor().newInstance());
+    public static Long test(int operationNumPerThread, int totalPutTakePairNum, Class<? extends Lock> lockClass) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        return test(operationNumPerThread, totalPutTakePairNum, lockClass.getDeclaredConstructor().newInstance());
     }
 
-    public static long test(int operationNumPerThread, int totalThreadsNum, Lock lock) {
+    public static Long test(int operationNumPerThread, int totalPutTakePairNum, Class<? extends Lock> lockClass, long timeOut, TimeUnit unit) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        return test(operationNumPerThread, totalPutTakePairNum, lockClass.getDeclaredConstructor().newInstance() ,timeOut, unit);
+    }
+
+    public static Long test(int operationNumPerThread, int totalThreadsNum, Lock lock) {
+        // Having a default max testing time of 7s = 7000ms
+        final long DEFAULT_TIME_OUT = 7000;
+        final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.MILLISECONDS;
+        return test(operationNumPerThread, totalThreadsNum, lock, DEFAULT_TIME_OUT, DEFAULT_TIME_UNIT);
+    }
+
+    public static Long test(int operationNumPerThread, int totalThreadsNum, Lock lock, long timeOut, TimeUnit unit) {
 
         // Create container instance
         BoundedContainer<Long> boundedContainer = new BoundedContainer<>(DEFAULT_CAPACITY, lock);
@@ -214,10 +227,19 @@ public class BoundedContainer<E> {
         // Start all threads
         for (Thread thread: threads) thread.start();
 
+        long deadLine = start + unit.toMillis(timeOut);
+
         // Wait for all threads to finish
         for (Thread thread: threads) {
             try {
-                thread.join();
+                while (true) {
+                    // If exceeds the time limit --> stop all threads
+                    if (System.currentTimeMillis() > deadLine) {
+                        thread.stop();
+                        break;
+                    }
+                    else thread.join(10);
+                }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -228,6 +250,6 @@ public class BoundedContainer<E> {
 //        System.out.println(end-start);
 
         // Return time cost
-        return end-start;
+        return (end-start) >= unit.toMillis(timeOut)? null: (end-start);
     }
 }

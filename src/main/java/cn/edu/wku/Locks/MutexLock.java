@@ -11,15 +11,8 @@ import java.util.concurrent.locks.LockSupport;
 
 public class MutexLock implements Lock {
 
-//    // Indicate whether the lock is occupied
-//    private final AtomicBoolean isLocked = new AtomicBoolean();
-
     // The waiting queue
     private final ConcurrentQueue<Thread> queue = new ConcurrentQueue<>();
-
-//    private final ConcurrentLinkedQueue<Thread> queue = new ConcurrentLinkedQueue<>();
-
-//    private final LinkedTransferQueue<Thread> queue = new LinkedTransferQueue<>();
 
     public MutexLock() {
 
@@ -61,17 +54,6 @@ public class MutexLock implements Lock {
     @Override
     public boolean tryLock(long time, TimeUnit unit) {
         throw new UnsupportedOperationException();
-//        // Get the deadline of lock attempts
-//        long deadline = System.nanoTime() + unit.toNanos(time);
-//        do {
-//            // Check whether this thread is interrupted
-//            if (Thread.interrupted()) throw new InterruptedException();
-//            // Attempt to occupy the lock
-//            if (isLocked.compareAndSet(false, true)) return true;
-//            // Check the deadline
-//        } while (System.nanoTime() < deadline);
-//        // Fail to obtain the lock
-//        return false;
     }
 
     // Deliver the lock to next waiting thread or release the lock when no waiting threads
