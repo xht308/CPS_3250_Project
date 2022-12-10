@@ -215,39 +215,45 @@ public class UIFrame {
             public void actionPerformed(ActionEvent e) {
                 if(getTotalAmout() == 1 && getTrail() == 1){
                     JOptionPane.showMessageDialog(frame, "Please make sure your entered.");
-                }else{
+                } else if (LockChoosed.getText().equals("")) {
+                    JOptionPane.showMessageDialog(frame, "Please choose the lock.");
+                } else{
                     LockTest test = new LockTest();
                     test.setTotalAmount(getTotalAmout());
                     test.setTrails(getTrail());
                     test.setBase(test.getTotalAmount(), test.getTrails());
-                    test.computeProcess(test.getTotalAmount(), test.getTrails(), test.getBase());
-                    test.computeGroupsInTrail(test.getTotalAmount(), test.getTrails(), test.getProcessInGroup());
+                    if(test.getBase() == 1){
+                        JOptionPane.showMessageDialog(frame, "The trail is too large, please enter a smaller value.");
+                    }else{
+                        test.computeProcess(test.getTotalAmount(), test.getTrails(), test.getBase());
+                        test.computeGroupsInTrail(test.getTotalAmount(), test.getTrails(), test.getProcessInGroup());
 
-                    try {
-                        if(SpinFlag){
-                            test.builtDataset(cn.edu.wku.Locks.SpinLock.class, "Spin Lock", getTrail());
+                        try {
+                            if(SpinFlag){
+                                test.builtDataset(cn.edu.wku.Locks.SpinLock.class, "Spin Lock", getTrail());
+                            }
+                            if(MutexFlag){
+                                test.builtDataset(cn.edu.wku.Locks.MutexLock.class, "Mutex Lock", getTrail());
+                            }
+                            if(MCSFlag){
+                                test.builtDataset(cn.edu.wku.Locks.MCSLock.class, "MCS Lock", getTrail());
+                            }
+                            if(CLHFlag){
+                                test.builtDataset(cn.edu.wku.Locks.CLHLock.class, "CLH Lock", getTrail());
+                            }
+                            if(TicketFlag){
+                                test.builtDataset(cn.edu.wku.Locks.TicketLock.class, "Ticket Lock", getTrail());
+                            }
+                        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                                 IllegalAccessException ex) {
+                            throw new RuntimeException(ex);
                         }
-                        if(MutexFlag){
-                            test.builtDataset(cn.edu.wku.Locks.MutexLock.class, "Mutex Lock", getTrail());
-                        }
-                        if(MCSFlag){
-                            test.builtDataset(cn.edu.wku.Locks.MCSLock.class, "MCS Lock", getTrail());
-                        }
-                        if(CLHFlag){
-                            test.builtDataset(cn.edu.wku.Locks.CLHLock.class, "CLH Lock", getTrail());
-                        }
-                        if(TicketFlag){
-                            test.builtDataset(cn.edu.wku.Locks.TicketLock.class, "Ticket Lock", getTrail());
-                        }
-                    } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                             IllegalAccessException ex) {
-                        throw new RuntimeException(ex);
+
+                        BarChartDemo1 demo = new BarChartDemo1("LineChart", test.getDataset());
+                        demo.pack();
+                        UIUtils.centerFrameOnScreen(demo);
+                        demo.setVisible(true);
                     }
-
-                    BarChartDemo1 demo = new BarChartDemo1("LineChart", test.getDataset());
-                    demo.pack();
-                    UIUtils.centerFrameOnScreen(demo);
-                    demo.setVisible(true);
                 }
             }
         });
