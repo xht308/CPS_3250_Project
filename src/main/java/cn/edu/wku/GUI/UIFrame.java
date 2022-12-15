@@ -1,4 +1,4 @@
-package cn.edu.wku;
+package cn.edu.wku.GUI;
 
 import cn.edu.wku.Locks.Utils.LockTest;
 import org.jfree.chart.ui.UIUtils;
@@ -269,7 +269,7 @@ public class UIFrame {
                             throw new RuntimeException(ex);
                         }
 
-                        BarChartDemo1 demo = new BarChartDemo1("LineChart", test.getDataset());
+                        BarChartFrame demo = new BarChartFrame("LineChart", test.getDataset());
                         demo.pack();
                         UIUtils.centerFrameOnScreen(demo);
                         demo.setVisible(true);

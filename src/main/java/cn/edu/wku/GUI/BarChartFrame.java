@@ -1,21 +1,20 @@
-package cn.edu.wku;
+package cn.edu.wku.GUI;
 
-        import org.jfree.chart.ChartFactory;
-        import org.jfree.chart.ChartPanel;
-        import org.jfree.chart.JFreeChart;
-        import org.jfree.chart.axis.NumberAxis;
-        import org.jfree.chart.block.BlockBorder;
-        import org.jfree.chart.plot.CategoryPlot;
-        import org.jfree.chart.ui.ApplicationFrame;
-        import org.jfree.data.category.CategoryDataset;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.ui.ApplicationFrame;
+import org.jfree.data.category.CategoryDataset;
 
-        import java.awt.*;
-        import java.io.Serial;
+import java.awt.*;
 
 /**
  * A simple demonstration application showing how to create a bar chart.
  */
-public class BarChartDemo1 extends ApplicationFrame {
+public class BarChartFrame extends ApplicationFrame {
 
 //    @Serial
 //    private static final long serialVersionUID = 1L;
@@ -25,7 +24,7 @@ public class BarChartDemo1 extends ApplicationFrame {
      *
      * @param title  the frame title.
      */
-    public BarChartDemo1(String title, CategoryDataset dataset) {
+    public BarChartFrame(String title, CategoryDataset dataset) {
         super(title);
         JFreeChart chart = createChart(dataset);
         ChartPanel chartPanel = new ChartPanel(chart, false);
